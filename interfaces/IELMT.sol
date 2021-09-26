@@ -5,6 +5,8 @@ interface IELMT {
 
   function setIsActive(bool isActive) external;
 
+  function setRules(string calldata _rules) external;
+
   function withdraw() external;
 
   function rules() external view returns (string memory);

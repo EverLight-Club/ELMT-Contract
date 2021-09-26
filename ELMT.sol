@@ -44,6 +44,7 @@ contract ELMT is ERC721Enumerable, Ownable, IELMT, IELMTMetadata {
   string private _contractURI = '';
   string private _tokenBaseURI = '';
   string private _tokenRevealedBaseURI = '';
+  string private _rules = '';
 
   event StakeEvent(address indexed from, uint256 characterId, uint256 power, uint256 stakeBn);
   event RedeemEvent(address indexed from, uint256 characterId, uint256 redeemBn, uint256 pb);
@@ -147,16 +148,17 @@ contract ELMT is ERC721Enumerable, Ownable, IELMT, IELMTMetadata {
     _tokenRevealedBaseURI = revealedBaseURI;
   }
 
+  function setRules(string calldata data) external override onlyOwner {
+    _rules = data;
+  }
+
   function contractURI() public view override returns (string memory) {
     return _contractURI;
   }
 
   function rules() public pure override returns (string memory) {
     // rules: {"minPower": MIN_STAKING_POWER, "curPR": currentWinningPR, "desc":""}
-    string memory output = string(abi.encodePacked('{"minPower":"', MIN_STAKING_POWER.toString(), '",'));
-    //output = string(abi.encodePacked(output, '"curPR":', '"', currentWinningPR.toString(), '",'));
-    output = string(abi.encodePacked(output, '"desc":', '"', 'The higher the arithmetic power, the more times you receive NFT, the higher the probability of winning', '"}'));
-    return output;
+    return _rules;
   }
 
   function tokenURI(uint256 tokenId) public view override(ERC721) returns (string memory) {
